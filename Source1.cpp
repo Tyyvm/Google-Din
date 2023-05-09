@@ -90,7 +90,8 @@ int main() {
 	Texture D;
 	D.loadFromFile("Din.png");
 	Player p(D);
-	//áëîê Êàêòóñîâ
+	
+	//блок Кактусов
 	Texture C[6];
 	Sprite Cact[6];
 	C[0].loadFromFile("1.png");
