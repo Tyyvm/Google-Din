@@ -3,59 +3,59 @@
 
 using namespace sf;
 
-int ground = 370;  // на какой кординате y игрок перестанет падать
+int ground = 370;  // // РЅР° РєР°РєРѕР№ РєРѕСЂРґРёРЅР°С‚Рµ y РёРіСЂРѕРє РїРµСЂРµСЃС‚Р°РЅРµС‚ РїР°РґР°С‚СЊ
 
-//взаимодействие с динозавром
+//РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ СЃ РґРёРЅРѕР·Р°РІСЂРѕРј
 class Player {
 public:
-	float dx, dy;   // кординаты скорости x,y
-	FloatRect rect; //кусок картинки
-	bool onGround;  //на земли ли вообще
+	float dx, dy;   
+	FloatRect rect; 
+	bool onGround;  
 	Sprite sprite;
-	float curFrame; //скорость анимации
+	float curFrame; //СЃРєРѕСЂРѕСЃС‚СЊ Р°РЅРёРјР°С†РёРё
 	int a;
 
 	Player(Texture& image) {
 		sprite.setTexture(image);
-		sprite.setTextureRect(IntRect(0, 0, 90, 95));// берем из целой картинки(где все формы динозавра) определенный квадрат
-		                                             //в точке (0,0) размером 90 на 95 
-		dx = dy = 0;              //  х и у
+		sprite.setTextureRect(IntRect(0, 0, 90, 95));// Р±РµСЂРµРј РёР· С†РµР»РѕР№ РєР°СЂС‚РёРЅРєРё(РіРґРµ РІСЃРµ С„РѕСЂРјС‹ РґРёРЅРѕР·Р°РІСЂР°) РѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ РєРІР°РґСЂР°С‚
+		                                             //РІ С‚РѕС‡РєРµ (0,0) СЂР°Р·РјРµСЂРѕРј 90 РЅР° 95 
+		dx = dy = 0;              
 		curFrame = 0;
 		a = 0;
 	}
 
 	void update(float time) {
-		rect.left += dx * time;   // x нашего динозавра (координаты картинки)
+		rect.left += dx * time;   // x РЅР°С€РµРіРѕ РґРёРЅРѕР·Р°РІСЂР° (РєРѕРѕСЂРґРёРЅР°С‚С‹ РєР°СЂС‚РёРЅРєРё)
 
 		if (!onGround)
 			dy = dy + 0.0005 * time;
 
-		rect.top += dy * time;    //y нашего динозавра 
+		rect.top += dy * time;    //y РЅР°С€РµРіРѕ РґРёРЅРѕР·Р°РІСЂР° 
 
-		if (rect.left == 0)       // кординаты (100, 370)
+		if (rect.left == 0)       // РєРѕСЂРґРёРЅР°С‚С‹ (100, 370)
 			rect.left = 100;
 		if (rect.top == 0)
 			rect.top = 370;
 
 		onGround = false;
 
-		if (rect.top > ground) {   // y который запретит персонажу падать
+		if (rect.top > ground) {   // y РєРѕС‚РѕСЂС‹Р№ Р·Р°РїСЂРµС‚РёС‚ РїРµСЂСЃРѕРЅР°Р¶Сѓ РїР°РґР°С‚СЊ
 			rect.top = ground;
 			dy = 0;
 
 			onGround = true;
 		}
 
-		if (dy == 0) {              // персонаж не прыгает
+		if (dy == 0) {              // РїРµСЂСЃРѕРЅР°Р¶ РЅРµ РїСЂС‹РіР°РµС‚
 			if (a == 0) {
-				curFrame += 0.0005; // скорость анимации моргания
+				curFrame += 0.0005; // СЃРєРѕСЂРѕСЃС‚СЊ Р°РЅРёРјР°С†РёРё РјРѕСЂРіР°РЅРёСЏ
 				if (curFrame > 1 && curFrame < 1.95)
 					curFrame = 1.95;
-				if (curFrame > 2)   // возвращение (аля обычные глаза)
+				if (curFrame > 2)  // РІРѕР·РІСЂР°С‰РµРЅРёРµ (РѕР±С‹С‡РЅС‹Рµ РіР»Р°Р·Р°) 
 					curFrame -= 2;
 			}
 
-			else if (a == 1) {      // бежит
+			else if (a == 1) {      // Р±РµР¶РёС‚
 				if (curFrame < 2)   
 					curFrame = 2;
 
@@ -78,17 +78,19 @@ public:
 
 int main() {
 	RenderWindow window(VideoMode(1000, 500), "Din:(");
-	//блок Пола
+	
+	//Р±Р»РѕРє РџРѕР»Р°
 	Texture P;
-	P.loadFromFile("ost/pol.png");
+	P.loadFromFile("pol.png");
 	Sprite Pol(P);
 	Pol.scale(0.42, 1);
 	Pol.setPosition(0, 450);
-	//блок Динозавра
+	
+	//Р±Р»РѕРє Р”РёРЅРѕР·Р°РІСЂР°
 	Texture D;
-	D.loadFromFile("ost/Din.png");
+	D.loadFromFile("Din.png");
 	Player p(D);
-	//блок Кактусов
+	//ГЎГ«Г®ГЄ ГЉГ ГЄГІГіГ±Г®Гў
 	Texture C[6];
 	Sprite Cact[6];
 	C[0].loadFromFile("1.png");
@@ -105,34 +107,39 @@ int main() {
 		if (i > 2)
 			Cact[i].setPosition(1000, 370);
 	}
-	srand(NULL(time));                            //генератор псевдослучайных чисел на основе времени
+	srand(NULL(time));                            
 	int cit = rand() % 6 + 1;
 	int b = 0;
-	//блок Птиц 
+	
+	//Р±Р»РѕРє РџС‚РёС†
 	Texture Pt; 
-	Pt.loadFromFile("ost/Ptic.png");
+	Pt.loadFromFile("Ptic.png");
 	Sprite Ptic(Pt);
-	Ptic.setTextureRect(IntRect(0, 0, 93, 80));   //определяем птицу в точке 0, 0 с размером 93 на 80
+	Ptic.setTextureRect(IntRect(0, 0, 93, 80));   
 	int pt = rand() % 2 + 1;
 	Ptic.setPosition(1000, 380 - 100 * (pt - 1));
-	float Fp = 0;                                 //анимация птички 
-	// вспомогательные переменные
+	float Fp = 0;                                //cРєРѕСЂРѕСЃС‚СЊ Р°РЅРёРјР°С†РёРё РїС‚РёС‡РєРё
+	
+	//РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ
 	bool play = false;
 	bool go = false;
 	Clock clock;
-
+        
+	//Р±Р»РѕРє РѕРєРѕРЅС‡Р°РЅРёСЏ РёРіСЂС‹
 	Texture O;
-	O.loadFromFile("ost/GameOver.png");
+	O.loadFromFile("GameOver.png");
 	Sprite Over(O);
 	Over.setPosition(1000, 0);
 
+	//Р±Р»РѕРє РєРЅРѕРїРєРё РЅР°Р·Р°Рґ
 	Texture N;
-	N.loadFromFile("ost/Naz.png");
+	N.loadFromFile("Naz.png");
 	Sprite Naz(N);
 	Naz.setPosition(1000, 0);
 
+	//Р±Р»РѕРє СЃС‡РµС‚Р°
 	Texture Cf;
-	Cf.loadFromFile("ost/Cifr.png");
+	Cf.loadFromFile("Cifr.png");
 	Sprite Cifr[5];
 	float cr[5] = { 0, 0, 0, 0, 0 };
 	for (int i = 0; i < 5; i++) {
@@ -143,7 +150,7 @@ int main() {
 
 	while (window.isOpen())
 	{
-		//время
+		//РІСЂРµРјСЏ
 		float time = clock.getElapsedTime().asMicroseconds(); 
 		clock.restart();
 		time = time / 800;
@@ -157,7 +164,7 @@ int main() {
 				window.close();
 			}
 		}
-		//нажатие пробела
+		//РЅР°Р¶Р°С‚РёРµ РїСЂРѕР±РµР»Р°
 		if (Keyboard::isKeyPressed(Keyboard::Space))
 			if (p.onGround) {
 				if (p.a < 2) {
@@ -198,11 +205,11 @@ int main() {
 
 		if (p.a == 1 && p.onGround == true)
 			play = true;
-		// Столкнулся ли игрок с кактусами
+		// РЎС‚РѕР»РєРЅСѓР»СЃСЏ Р»Рё РёРіСЂРѕРє СЃ РєР°РєС‚СѓСЃР°РјРё
 		for (int i = 0; i < 6; i++)
 			if (p.sprite.getGlobalBounds().intersects(Cact[i].getGlobalBounds()))
 				go = true;
-		// Столкнулся ли игрок с птицой
+		// РЎС‚РѕР»РєРЅСѓР»СЃСЏ Р»Рё РёРіСЂРѕРє СЃ РїС‚РёС†Р°РјРё
 		if (p.sprite.getGlobalBounds().intersects(Ptic.getGlobalBounds()))
 			go = true;
 
@@ -228,7 +235,7 @@ int main() {
 			}
 
 			else if (b == 10) {
-				Ptic.move(-0.2 * time, 0);
+				Ptic.move(-0.25 * time, 0);
 
 				Vector2f pit = Ptic.getPosition();
 				if (pit.x < -100) {
@@ -283,7 +290,7 @@ int main() {
 			Naz.setPosition(450, 250);
 		}
 
-		Fp += 0.0025;                             //тк 2 кадра
+		Fp += 0.0035;                             
 		if (Fp > 2)
 			Fp -= 2;
 		Ptic.setTextureRect(IntRect(93 * int(Fp), 0, 93, 80));
